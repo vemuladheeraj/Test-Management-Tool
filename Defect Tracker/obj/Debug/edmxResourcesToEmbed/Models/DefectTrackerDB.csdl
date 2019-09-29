@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Defect_TrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Defect_TrackerEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="releases" EntityType="Defect_TrackerModel.release" />
+    <EntitySet Name="Testexecutions" EntityType="Defect_TrackerModel.Testexecution" />
+    <EntitySet Name="TicketInfoes" EntityType="Defect_TrackerModel.TicketInfo" />
+    <EntitySet Name="Defects" EntityType="Defect_TrackerModel.Defect" />
+    <AssociationSet Name="FK__Defects__r_id__2B3F6F97" Association="Defect_TrackerModel.FK__Defects__r_id__2B3F6F97">
+      <End Role="release" EntitySet="releases" />
+      <End Role="Defect" EntitySet="Defects" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TicketInf__T_Tes__1DE57479" Association="Defect_TrackerModel.FK__TicketInf__T_Tes__1DE57479">
+      <End Role="release" EntitySet="releases" />
+      <End Role="TicketInfo" EntitySet="TicketInfoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Testexecu__comme__24927208" Association="Defect_TrackerModel.FK__Testexecu__comme__24927208">
+      <End Role="TicketInfo" EntitySet="TicketInfoes" />
+      <End Role="Testexecution" EntitySet="Testexecutions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="release">
+    <Key>
+      <PropertyRef Name="R_Id" />
+    </Key>
+    <Property Name="R_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Release_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Defects" Relationship="Defect_TrackerModel.FK__Defects__r_id__2B3F6F97" FromRole="release" ToRole="Defect" />
+    <NavigationProperty Name="TicketInfoes" Relationship="Defect_TrackerModel.FK__TicketInf__T_Tes__1DE57479" FromRole="release" ToRole="TicketInfo" />
+  </EntityType>
+  <EntityType Name="Testexecution">
+    <Key>
+      <PropertyRef Name="TE_Id" />
+    </Key>
+    <Property Name="TE_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="T_Id" Type="Int32" Nullable="false" />
+    <Property Name="Testcases" Type="Int32" />
+    <Property Name="passed" Type="Int32" />
+    <Property Name="fail" Type="Int32" />
+    <Property Name="onhold" Type="Int32" />
+    <Property Name="defects" Type="Int32" />
+    <Property Name="comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TicketInfo" Relationship="Defect_TrackerModel.FK__Testexecu__comme__24927208" FromRole="Testexecution" ToRole="TicketInfo" />
+  </EntityType>
+  <EntityType Name="TicketInfo">
+    <Key>
+      <PropertyRef Name="T_Id" />
+    </Key>
+    <Property Name="T_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="R_ID" Type="Int32" />
+    <Property Name="T_Number" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="T_Desc" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="T_State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="T_Developer" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="T_Tester" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="release" Relationship="Defect_TrackerModel.FK__TicketInf__T_Tes__1DE57479" FromRole="TicketInfo" ToRole="release" />
+    <NavigationProperty Name="Testexecutions" Relationship="Defect_TrackerModel.FK__Testexecu__comme__24927208" FromRole="TicketInfo" ToRole="Testexecution" />
+  </EntityType>
+  <EntityType Name="Defect">
+    <Key>
+      <PropertyRef Name="D_id" />
+    </Key>
+    <Property Name="D_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="T_id" Type="Int32" />
+    <Property Name="r_id" Type="Int32" />
+    <Property Name="d_number" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="d_title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="D_Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Stepstorepro" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="release" Relationship="Defect_TrackerModel.FK__Defects__r_id__2B3F6F97" FromRole="Defect" ToRole="release" />
+  </EntityType>
+  <Association Name="FK__Defects__r_id__2B3F6F97">
+    <End Type="Defect_TrackerModel.release" Role="release" Multiplicity="0..1" />
+    <End Type="Defect_TrackerModel.Defect" Role="Defect" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="release">
+        <PropertyRef Name="R_Id" />
+      </Principal>
+      <Dependent Role="Defect">
+        <PropertyRef Name="r_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TicketInf__T_Tes__1DE57479">
+    <End Type="Defect_TrackerModel.release" Role="release" Multiplicity="0..1" />
+    <End Type="Defect_TrackerModel.TicketInfo" Role="TicketInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="release">
+        <PropertyRef Name="R_Id" />
+      </Principal>
+      <Dependent Role="TicketInfo">
+        <PropertyRef Name="R_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Testexecu__comme__24927208">
+    <End Type="Defect_TrackerModel.TicketInfo" Role="TicketInfo" Multiplicity="1" />
+    <End Type="Defect_TrackerModel.Testexecution" Role="Testexecution" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TicketInfo">
+        <PropertyRef Name="T_Id" />
+      </Principal>
+      <Dependent Role="Testexecution">
+        <PropertyRef Name="T_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Defect_TrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Defects">
+    <Key>
+      <PropertyRef Name="D_id" />
+    </Key>
+    <Property Name="D_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="T_id" Type="int" />
+    <Property Name="r_id" Type="int" />
+    <Property Name="d_number" Type="varchar" MaxLength="100" />
+    <Property Name="d_title" Type="varchar" MaxLength="100" />
+    <Property Name="D_Description" Type="varchar" MaxLength="1000" />
+    <Property Name="attachment" Type="varbinary(max)" />
+    <Property Name="Stepstorepro" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="releases">
+    <Key>
+      <PropertyRef Name="R_Id" />
+    </Key>
+    <Property Name="R_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Release_Name" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Testexecutions">
+    <Key>
+      <PropertyRef Name="TE_Id" />
+    </Key>
+    <Property Name="TE_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="T_Id" Type="int" Nullable="false" />
+    <Property Name="Testcases" Type="int" />
+    <Property Name="passed" Type="int" />
+    <Property Name="fail" Type="int" />
+    <Property Name="onhold" Type="int" />
+    <Property Name="defects" Type="int" />
+    <Property Name="comments" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="TicketInfoes">
+    <Key>
+      <PropertyRef Name="T_Id" />
+    </Key>
+    <Property Name="T_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="R_ID" Type="int" />
+    <Property Name="T_Number" Type="varchar" MaxLength="100" />
+    <Property Name="T_Desc" Type="varchar" MaxLength="1000" />
+    <Property Name="T_State" Type="varchar" MaxLength="100" />
+    <Property Name="T_Developer" Type="varchar" MaxLength="100" />
+    <Property Name="T_Tester" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK__Defects__r_id__2B3F6F97">
+    <End Role="releases" Type="Self.releases" Multiplicity="0..1" />
+    <End Role="Defects" Type="Self.Defects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="releases">
+        <PropertyRef Name="R_Id" />
+      </Principal>
+      <Dependent Role="Defects">
+        <PropertyRef Name="r_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Testexecu__comme__24927208">
+    <End Role="TicketInfoes" Type="Self.TicketInfoes" Multiplicity="1" />
+    <End Role="Testexecutions" Type="Self.Testexecutions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TicketInfoes">
+        <PropertyRef Name="T_Id" />
+      </Principal>
+      <Dependent Role="Testexecutions">
+        <PropertyRef Name="T_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TicketInf__T_Tes__1DE57479">
+    <End Role="releases" Type="Self.releases" Multiplicity="0..1" />
+    <End Role="TicketInfoes" Type="Self.TicketInfoes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="releases">
+        <PropertyRef Name="R_Id" />
+      </Principal>
+      <Dependent Role="TicketInfoes">
+        <PropertyRef Name="R_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Defect_TrackerModelStoreContainer">
+    <EntitySet Name="Defects" EntityType="Self.Defects" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="releases" EntityType="Self.releases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Testexecutions" EntityType="Self.Testexecutions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TicketInfoes" EntityType="Self.TicketInfoes" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Defects__r_id__2B3F6F97" Association="Self.FK__Defects__r_id__2B3F6F97">
+      <End Role="releases" EntitySet="releases" />
+      <End Role="Defects" EntitySet="Defects" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Testexecu__comme__24927208" Association="Self.FK__Testexecu__comme__24927208">
+      <End Role="TicketInfoes" EntitySet="TicketInfoes" />
+      <End Role="Testexecutions" EntitySet="Testexecutions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TicketInf__T_Tes__1DE57479" Association="Self.FK__TicketInf__T_Tes__1DE57479">
+      <End Role="releases" EntitySet="releases" />
+      <End Role="TicketInfoes" EntitySet="TicketInfoes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

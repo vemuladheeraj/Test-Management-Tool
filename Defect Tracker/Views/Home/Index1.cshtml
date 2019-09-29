@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.a = "testview";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index1</title>
+</head>
+<body>
+    <div> 
+        <label>
+            Select Release         
+
+            <select class="" id="" name="">
+                <option disabled selected>-- Release Name --</option>
+                @foreach (var rel in ViewBag.b)
+                {
+                 
+                  <option>@rel.name1</option> 
+                }
+               
+      
+            </select>
+        </label>
+    </div>
+   
+
+</body>
+</html>

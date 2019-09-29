@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Defect_TrackerModelStoreContainer" CdmEntityContainer="Defect_TrackerEntities1">
+    <EntitySetMapping Name="releases">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.release)">
+        <MappingFragment StoreEntitySet="releases">
+          <ScalarProperty Name="R_Id" ColumnName="R_Id" />
+          <ScalarProperty Name="Release_Name" ColumnName="Release_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Testexecutions">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.Testexecution)">
+        <MappingFragment StoreEntitySet="Testexecutions">
+          <ScalarProperty Name="TE_Id" ColumnName="TE_Id" />
+          <ScalarProperty Name="T_Id" ColumnName="T_Id" />
+          <ScalarProperty Name="Testcases" ColumnName="Testcases" />
+          <ScalarProperty Name="passed" ColumnName="passed" />
+          <ScalarProperty Name="fail" ColumnName="fail" />
+          <ScalarProperty Name="onhold" ColumnName="onhold" />
+          <ScalarProperty Name="defects" ColumnName="defects" />
+          <ScalarProperty Name="comments" ColumnName="comments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TicketInfoes">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.TicketInfo)">
+        <MappingFragment StoreEntitySet="TicketInfoes">
+          <ScalarProperty Name="T_Id" ColumnName="T_Id" />
+          <ScalarProperty Name="R_ID" ColumnName="R_ID" />
+          <ScalarProperty Name="T_Number" ColumnName="T_Number" />
+          <ScalarProperty Name="T_Desc" ColumnName="T_Desc" />
+          <ScalarProperty Name="T_State" ColumnName="T_State" />
+          <ScalarProperty Name="T_Developer" ColumnName="T_Developer" />
+          <ScalarProperty Name="T_Tester" ColumnName="T_Tester" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Defects">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.Defect)">
+        <MappingFragment StoreEntitySet="Defects">
+          <ScalarProperty Name="D_id" ColumnName="D_id" />
+          <ScalarProperty Name="T_id" ColumnName="T_id" />
+          <ScalarProperty Name="r_id" ColumnName="r_id" />
+          <ScalarProperty Name="d_number" ColumnName="d_number" />
+          <ScalarProperty Name="d_title" ColumnName="d_title" />
+          <ScalarProperty Name="D_Description" ColumnName="D_Description" />
+          <ScalarProperty Name="attachment" ColumnName="attachment" />
+          <ScalarProperty Name="Stepstorepro" ColumnName="Stepstorepro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

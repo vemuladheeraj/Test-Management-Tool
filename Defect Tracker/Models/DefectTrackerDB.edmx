@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Defect_TrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Defects">
+          <Key>
+            <PropertyRef Name="D_id" />
+          </Key>
+          <Property Name="D_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="T_id" Type="int" />
+          <Property Name="r_id" Type="int" />
+          <Property Name="d_number" Type="varchar" MaxLength="100" />
+          <Property Name="d_title" Type="varchar" MaxLength="100" />
+          <Property Name="D_Description" Type="varchar" MaxLength="1000" />
+          <Property Name="attachment" Type="varbinary(max)" />
+          <Property Name="Stepstorepro" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="releases">
+          <Key>
+            <PropertyRef Name="R_Id" />
+          </Key>
+          <Property Name="R_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Release_Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Testexecutions">
+          <Key>
+            <PropertyRef Name="TE_Id" />
+          </Key>
+          <Property Name="TE_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="T_Id" Type="int" Nullable="false" />
+          <Property Name="Testcases" Type="int" />
+          <Property Name="passed" Type="int" />
+          <Property Name="fail" Type="int" />
+          <Property Name="onhold" Type="int" />
+          <Property Name="defects" Type="int" />
+          <Property Name="comments" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="TicketInfoes">
+          <Key>
+            <PropertyRef Name="T_Id" />
+          </Key>
+          <Property Name="T_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="R_ID" Type="int" />
+          <Property Name="T_Number" Type="varchar" MaxLength="100" />
+          <Property Name="T_Desc" Type="varchar" MaxLength="1000" />
+          <Property Name="T_State" Type="varchar" MaxLength="100" />
+          <Property Name="T_Developer" Type="varchar" MaxLength="100" />
+          <Property Name="T_Tester" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__Defects__r_id__2B3F6F97">
+          <End Role="releases" Type="Self.releases" Multiplicity="0..1" />
+          <End Role="Defects" Type="Self.Defects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="releases">
+              <PropertyRef Name="R_Id" />
+            </Principal>
+            <Dependent Role="Defects">
+              <PropertyRef Name="r_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Testexecu__comme__24927208">
+          <End Role="TicketInfoes" Type="Self.TicketInfoes" Multiplicity="1" />
+          <End Role="Testexecutions" Type="Self.Testexecutions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketInfoes">
+              <PropertyRef Name="T_Id" />
+            </Principal>
+            <Dependent Role="Testexecutions">
+              <PropertyRef Name="T_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketInf__T_Tes__1DE57479">
+          <End Role="releases" Type="Self.releases" Multiplicity="0..1" />
+          <End Role="TicketInfoes" Type="Self.TicketInfoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="releases">
+              <PropertyRef Name="R_Id" />
+            </Principal>
+            <Dependent Role="TicketInfoes">
+              <PropertyRef Name="R_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Defect_TrackerModelStoreContainer">
+          <EntitySet Name="Defects" EntityType="Self.Defects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="releases" EntityType="Self.releases" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Testexecutions" EntityType="Self.Testexecutions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketInfoes" EntityType="Self.TicketInfoes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Defects__r_id__2B3F6F97" Association="Self.FK__Defects__r_id__2B3F6F97">
+            <End Role="releases" EntitySet="releases" />
+            <End Role="Defects" EntitySet="Defects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Testexecu__comme__24927208" Association="Self.FK__Testexecu__comme__24927208">
+            <End Role="TicketInfoes" EntitySet="TicketInfoes" />
+            <End Role="Testexecutions" EntitySet="Testexecutions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketInf__T_Tes__1DE57479" Association="Self.FK__TicketInf__T_Tes__1DE57479">
+            <End Role="releases" EntitySet="releases" />
+            <End Role="TicketInfoes" EntitySet="TicketInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Defect_TrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Defect_TrackerEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="releases" EntityType="Defect_TrackerModel.release" />
+          <EntitySet Name="Testexecutions" EntityType="Defect_TrackerModel.Testexecution" />
+          <EntitySet Name="TicketInfoes" EntityType="Defect_TrackerModel.TicketInfo" />
+          <EntitySet Name="Defects" EntityType="Defect_TrackerModel.Defect" />
+          <AssociationSet Name="FK__Defects__r_id__2B3F6F97" Association="Defect_TrackerModel.FK__Defects__r_id__2B3F6F97">
+            <End Role="release" EntitySet="releases" />
+            <End Role="Defect" EntitySet="Defects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketInf__T_Tes__1DE57479" Association="Defect_TrackerModel.FK__TicketInf__T_Tes__1DE57479">
+            <End Role="release" EntitySet="releases" />
+            <End Role="TicketInfo" EntitySet="TicketInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Testexecu__comme__24927208" Association="Defect_TrackerModel.FK__Testexecu__comme__24927208">
+            <End Role="TicketInfo" EntitySet="TicketInfoes" />
+            <End Role="Testexecution" EntitySet="Testexecutions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="release">
+          <Key>
+            <PropertyRef Name="R_Id" />
+          </Key>
+          <Property Name="R_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Release_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Defects" Relationship="Defect_TrackerModel.FK__Defects__r_id__2B3F6F97" FromRole="release" ToRole="Defect" />
+          <NavigationProperty Name="TicketInfoes" Relationship="Defect_TrackerModel.FK__TicketInf__T_Tes__1DE57479" FromRole="release" ToRole="TicketInfo" />
+        </EntityType>
+        <EntityType Name="Testexecution">
+          <Key>
+            <PropertyRef Name="TE_Id" />
+          </Key>
+          <Property Name="TE_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="T_Id" Type="Int32" Nullable="false" />
+          <Property Name="Testcases" Type="Int32" />
+          <Property Name="passed" Type="Int32" />
+          <Property Name="fail" Type="Int32" />
+          <Property Name="onhold" Type="Int32" />
+          <Property Name="defects" Type="Int32" />
+          <Property Name="comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TicketInfo" Relationship="Defect_TrackerModel.FK__Testexecu__comme__24927208" FromRole="Testexecution" ToRole="TicketInfo" />
+        </EntityType>
+        <EntityType Name="TicketInfo">
+          <Key>
+            <PropertyRef Name="T_Id" />
+          </Key>
+          <Property Name="T_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="R_ID" Type="Int32" />
+          <Property Name="T_Number" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="T_Desc" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="T_State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="T_Developer" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="T_Tester" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="release" Relationship="Defect_TrackerModel.FK__TicketInf__T_Tes__1DE57479" FromRole="TicketInfo" ToRole="release" />
+          <NavigationProperty Name="Testexecutions" Relationship="Defect_TrackerModel.FK__Testexecu__comme__24927208" FromRole="TicketInfo" ToRole="Testexecution" />
+        </EntityType>
+        <EntityType Name="Defect">
+          <Key>
+            <PropertyRef Name="D_id" />
+          </Key>
+          <Property Name="D_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="T_id" Type="Int32" />
+          <Property Name="r_id" Type="Int32" />
+          <Property Name="d_number" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="d_title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="D_Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Stepstorepro" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="release" Relationship="Defect_TrackerModel.FK__Defects__r_id__2B3F6F97" FromRole="Defect" ToRole="release" />
+        </EntityType>
+        <Association Name="FK__Defects__r_id__2B3F6F97">
+          <End Type="Defect_TrackerModel.release" Role="release" Multiplicity="0..1" />
+          <End Type="Defect_TrackerModel.Defect" Role="Defect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="release">
+              <PropertyRef Name="R_Id" />
+            </Principal>
+            <Dependent Role="Defect">
+              <PropertyRef Name="r_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketInf__T_Tes__1DE57479">
+          <End Type="Defect_TrackerModel.release" Role="release" Multiplicity="0..1" />
+          <End Type="Defect_TrackerModel.TicketInfo" Role="TicketInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="release">
+              <PropertyRef Name="R_Id" />
+            </Principal>
+            <Dependent Role="TicketInfo">
+              <PropertyRef Name="R_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Testexecu__comme__24927208">
+          <End Type="Defect_TrackerModel.TicketInfo" Role="TicketInfo" Multiplicity="1" />
+          <End Type="Defect_TrackerModel.Testexecution" Role="Testexecution" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketInfo">
+              <PropertyRef Name="T_Id" />
+            </Principal>
+            <Dependent Role="Testexecution">
+              <PropertyRef Name="T_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Defect_TrackerModelStoreContainer" CdmEntityContainer="Defect_TrackerEntities1">
+    <EntitySetMapping Name="releases">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.release)">
+        <MappingFragment StoreEntitySet="releases">
+          <ScalarProperty Name="R_Id" ColumnName="R_Id" />
+          <ScalarProperty Name="Release_Name" ColumnName="Release_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Testexecutions">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.Testexecution)">
+        <MappingFragment StoreEntitySet="Testexecutions">
+          <ScalarProperty Name="TE_Id" ColumnName="TE_Id" />
+          <ScalarProperty Name="T_Id" ColumnName="T_Id" />
+          <ScalarProperty Name="Testcases" ColumnName="Testcases" />
+          <ScalarProperty Name="passed" ColumnName="passed" />
+          <ScalarProperty Name="fail" ColumnName="fail" />
+          <ScalarProperty Name="onhold" ColumnName="onhold" />
+          <ScalarProperty Name="defects" ColumnName="defects" />
+          <ScalarProperty Name="comments" ColumnName="comments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TicketInfoes">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.TicketInfo)">
+        <MappingFragment StoreEntitySet="TicketInfoes">
+          <ScalarProperty Name="T_Id" ColumnName="T_Id" />
+          <ScalarProperty Name="R_ID" ColumnName="R_ID" />
+          <ScalarProperty Name="T_Number" ColumnName="T_Number" />
+          <ScalarProperty Name="T_Desc" ColumnName="T_Desc" />
+          <ScalarProperty Name="T_State" ColumnName="T_State" />
+          <ScalarProperty Name="T_Developer" ColumnName="T_Developer" />
+          <ScalarProperty Name="T_Tester" ColumnName="T_Tester" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Defects">
+      <EntityTypeMapping TypeName="IsTypeOf(Defect_TrackerModel.Defect)">
+        <MappingFragment StoreEntitySet="Defects">
+          <ScalarProperty Name="D_id" ColumnName="D_id" />
+          <ScalarProperty Name="T_id" ColumnName="T_id" />
+          <ScalarProperty Name="r_id" ColumnName="r_id" />
+          <ScalarProperty Name="d_number" ColumnName="d_number" />
+          <ScalarProperty Name="d_title" ColumnName="d_title" />
+          <ScalarProperty Name="D_Description" ColumnName="D_Description" />
+          <ScalarProperty Name="attachment" ColumnName="attachment" />
+          <ScalarProperty Name="Stepstorepro" ColumnName="Stepstorepro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

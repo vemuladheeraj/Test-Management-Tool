@@ -1,0 +1,177 @@
+﻿@model Defect_Tracker.Models.DefectViewModel
+
+
+@if (ViewBag.ticketinformation != null)
+{
+    <div style="padding-bottom:inherit">
+        <table id="myTable" border="1" cellspacing="0" class="display">
+            <colgroup>
+                <col />
+                <col />
+                <col style="width:110px" />
+                <col style="width:120px" />
+                <col style="width:130px" />
+            </colgroup>
+            <thead>
+                <tr class="header">
+
+                    <th>TicketNumber</th>
+                    @*<th width="3%">Select</th>*@
+                    <th><input type="checkbox" name="checkAll" class="checkAll" /> </th>
+                    <th width="70%">Ticket Title</th>
+                    <th>State</th>
+                    <th>Developer</th>
+                    <th>Tester</th>
+                    <th>TotalTestcases</th>
+                    <th>Passed</th>
+                    <th>Fail</th>
+                    <th>OnHold</th>
+                    <th>Defects</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+
+                @*@foreach (var item in ViewBag.ticketinformation)
+                        {
+
+                        <tr>
+                            <td>
+                                @item.T_Number
+                            </td>
+                            <td>
+                                @item.T_Desc
+                            </td>
+                            <td>
+                                @item.T_State
+                            </td>
+                            <td>
+                                @item.T_Developer
+                            </td>
+                            <td>
+                                @item.T_Tester
+                            </td>                    <td>
+                                @item.passed
+                            </td>
+                            <td>
+                                @item.Testcases
+                            </td>
+                            <td>
+                                @item.fail
+                            </td>
+                            <td>
+                                @item.onhold
+                            </td>
+                            <td>
+                                @item.defects
+                            </td>
+                        </tr>
+
+                    }*@
+
+
+                @{
+                    var tickets = (List<Defect_Tracker.Models.DefectModel>)Model.AllTicketDetails;
+
+                }
+                @foreach (var item in tickets)
+                {
+
+                    <tr>
+
+                        <td class="ticket Alleditable">@item.T_Number</td>
+
+                        <td>
+                            <input type="checkbox" name="check" id="@item.T_Number" />
+                        </td>
+                        <td>
+                            @item.T_Desc
+                        </td>
+                        <td>
+                            @item.T_State
+                        </td>
+                        <td>
+                            @item.T_Developer
+                        </td>
+                        <td>
+                            @item.Tester
+                        </td>
+                        <td class="editable Alleditable">
+                            @item.Testcases
+                        </td>
+                        <td class="editable Alleditable">
+                            <input type="text" id="passed" value=@item.Passed class="hide" height="1" width="1">
+                            <span>@item.Passed</span>
+                        </td>
+                        <td class="editable Alleditable">
+                            @item.Fail
+                        </td>
+                        <td class="editable Alleditable">
+                            @item.OnHold
+                        </td>
+                        <td class="defects Alleditable">
+                            <a href="#" onclick="" name="@item.T_Number" id="defectcount">@item.Defects</a>
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+
+                    }
+<script>
+
+    
+    $('.defects Alleditable').on('click', function () {
+        var id = this.id;
+        switch (id) {
+            case 'defectcount':
+                document.getElementById
+                break;
+        }
+    });
+      
+    function defects()
+    {
+        document.getElementById('defectcount').c
+    }
+    //$(function () {
+    //    $("#myTable").on("click", 'tr', function (e) {
+
+    //        var ticketnum = $(this).find('td:nth-child(1)').html();
+    //            console.log(ticketnum);
+    //            //var passed = $(this).find('td:nth-child(7)');
+    //            //passed.children('input').siblings().addClass('hide').focus();
+    //            //passed.children('input').removeClass('hide');
+
+
+    //    });
+    //    //$('input').on('blur', function (e) {
+    //    //    $(this).addClass('hide');
+    //    //    $(this).siblings().removeClass('hide');
+    //    //})
+    //})
+    $(document).ready(function () {
+        $('.checkAll').on('click', function () {
+            $(this).closest('table').find('tbody :checkbox')
+              .prop('checked', this.checked)
+              .closest('tr').toggleClass('selected', this.checked);
+
+        });
+
+        //$('tbody :checkbox').on('click', function () {
+
+
+        //    $(this).closest('tr').toggleClass('selected', this.checked);
+        //    var selectedRow = $(this).closest('tr').find('td:nth-child(1)').html();
+        //    alert(selectedRow);
+
+        //    $(this).closest('table').find('.checkAll').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length));
+        //});
+    });
+</script>

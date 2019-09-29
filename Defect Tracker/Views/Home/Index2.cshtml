@@ -1,0 +1,631 @@
+﻿@model Defect_Tracker.Models.DefectViewModel
+
+
+@{
+    Layout = null;
+    ViewBag.Title = "Show DB values";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Defect Tracker</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/StyleSheet2.css" rel="stylesheet" />
+    <link href="~/Content/StyleSheet1.css" rel="stylesheet" />
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <script language="javascript">
+
+        function onchangerelasename() {
+
+            //alert('Test for on change' +rname);
+            debugger;
+            var rname = document.querySelector('#releasename').value;
+            debugger;
+            //document.querySelector("#exit").textContent = rname;
+            document.getElementById('exit').innerHTML = rname + " Release";
+            var serviceURL = 'PostReleaseData';
+            $.ajax({
+                type: 'POST',
+                url: serviceURL,
+                data: '{param:"' + rname + '"}',
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $("#resultDiv").html(response);
+                    // alert('success');
+                },
+                error: errorFunc
+            });
+
+            function successFunc(data, status) {
+                debugger;
+                alert(status);
+            }
+
+            function errorFunc() {
+                alert('ERROrRINFO');
+            }
+        };
+        function DefectDetails() {
+            if (document.getElementById('dtitle').value == "" || document.getElementById('ddesc').value == "" || document.getElementById('drepro').value == "") {
+                alert("Fill All Fields !");
+            } else {
+                debugger;
+                //var ticketid = selectedTd;
+                var selectedTd = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked").find('td.ticket').text();
+                var ticketid = selectedTd.toString();
+                //String ticketid =(String) selectedTd;
+                var deftitle = document.getElementById('dtitle').value;
+                var DefectDesc = document.getElementById('ddesc').value;
+                var DefSteps = document.getElementById('drepro').value;
+                //var serviceURL = 'InsertTicketDetails';
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("InsertDefectDetails", "Home")',
+                    data: '{ticketid:"' + ticketid + '", deftitle:"' + deftitle + '", DefectDesc:"' + DefectDesc + '", DefSteps:"' + DefSteps + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (response) {
+                        //@*@Html.Partial("PartialIndex2")*@
+                        document.getElementById('id03').style.display = 'none';
+                        alert("Defect added Sucessfully");
+                        // alert('success');
+                    },
+                    error: errorFunc
+                });
+                function errorFunc(e) {
+                    alert('There was some error on inserting the defect details : ' + e);
+                }
+            }
+        }
+
+        @*function check_empty1() {
+            if (document.getElementById('ttitle').value == "" || document.getElementById('tdes').value == "" || document.getElementById('tstate').value == "") {
+                alert("Fill All Fields !");
+            } else {
+                document.getElementById('ticketpopup').submit();
+                //var dr4 = document.getElementById('displayrelname').value;
+                var rname = document.querySelector('#releasename').value;
+                var dr1 = document.getElementById('ttitle').value;
+                var dr2 = document.getElementById('tstate').value;
+                var dr3 = document.getElementById('tdes').value;
+                var serviceURL = 'InsertTicketDetails';
+                $.ajax({
+                    type: 'POST',
+                    url: serviceURL,
+                    data: '{param1:"' + rname + '", param2:"' + dr1 + '", param3:"' + dr2 + '", param4:"' + dr3 + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+
+                        alert("Saved Sucessfully");
+                        // alert('success');
+                    },
+                    error: errorFunc
+                });
+                function errorFunc(e) {
+                    alert('There was some error on inserting the ticket details : ' + e);
+                }
+                //alert("Form Submitted Successfully...");
+            }
+        }*@
+        function SaveTicketDetails() {
+            if (document.getElementById('ttitle').value == "" || document.getElementById('tdes').value == "" || document.getElementById('tstate').value == "") {
+                alert("Fill All Fields !");
+            } else {
+                //document.getElementById('ticketpopup').submit();
+                //var dr4 = document.getElementById('displayrelname').value;
+                var rname = document.querySelector('#releasename').value;
+                var dr1 = document.getElementById('ttitle').value; 
+                var dr2 = document.getElementById('tstate').value;
+                var dr3 = document.getElementById('tdes').value;
+                //var serviceURL = 'InsertTicketDetails';
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("InsertTicketDetails","Home")',
+                    data: '{param1:"' + rname + '", param2:"' + dr1 + '", param3:"' + dr2 + '", param4:"' + dr3 + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (response) {
+                        //@*@Html.Partial("PartialIndex2")*@
+                        alert("Saved Sucessfully");
+                        // alert('success');
+                    },
+                    error: errorFunc
+                });
+                function errorFunc(e) {
+                    alert('There was some error on inserting the ticket details : ' + e);
+                }
+                //alert("Form Submitted Successfully...");
+            }
+        }
+
+        function saveReleaseData() {
+
+            var releaseDesc = document.getElementById('relname').value;
+            if (releaseDesc == "") {
+                alert("Please Enter Valid Release Name");
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("UpdateReleasedata")',
+                    dataType: 'json',
+                    data: { releaseName: releaseDesc },
+                    success: function (data) {
+
+                        alert('Release Added Successfully');
+                    },
+                    error: function (ex) {
+                        alert("Some Error");
+                        console.log(ex);
+                    }
+                });
+            }
+        }
+        function closeReleaseDataWindow() {
+
+            event.preventDefault();
+            document.getElementById('id02').style.display = 'none';
+
+        }
+        //function check_empty2() {
+        //    if (document.getElementById('relname').value == "") {
+        //        alert("Enter Release Name!");
+        //    } else {
+        //        var formId = document.getElementById('form');
+        //        formId.submit();
+        //        var rename = document.getElementById('relname').value;
+        //        var serviceURL = 'UpdateReleasedata';
+        //        $.ajax({
+        //            type: 'POST',
+        //            url: serviceURL,
+        //            data: '{param:"' + rename + '"}',
+
+        //            contentType: "application/json; charset=utf-8",
+        //            dataType: "html",
+        //            success: function (response) {
+        //                alert("Release Added");
+        //                // alert('success');
+        //            },
+        //            error: errorFunc
+        //        });
+        //        function errorFunc() {
+        //            alert('There was some error on updating the Release Name');
+        //        }
+        //    }
+        //}
+        //This is for chart
+        @*function chart() {
+            //alert('Boom!');
+            
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "Automotive Semiconductor Vendors 2015",
+                    fontSize: 21
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 160,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints)
+                    }]
+            });
+            chart.render();
+        }*@
+        function ReportDefect() {
+            alert('There are no Defects in this page. Close the popup and do your work!');
+        }
+        //Function To Display Popup
+        function div_show() {
+            document.getElementById('abc').style.display = "block";
+        }
+        //Function to Hide Popup
+        function div_hide() {
+            document.getElementById('abc').style.display = "none";
+        }
+        //function div_show1() {
+        //    var rname = document.querySelector('#releasename').value;
+        //    document.getElementById('abc1').style.display = "block";
+        //    document.getElementById('displayrelname').innerHTML = rname + "Release";
+        //}
+        //Function to Hide Popup
+        function div_hide1() {
+            document.getElementById('abc1').style.display = "none";
+        }
+
+        function div_show2() {
+            document.getElementById('abc2').style.display = "block";
+        }
+        //Function to Hide Popup
+        function div_hide2() {
+            document.getElementById('abc2').style.display = "none";
+        }
+        function searchTid() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+    </script>
+    <script>
+        function addticketdetailspopup() {
+            document.getElementById('id01').style.display = 'block';
+            var rname = document.querySelector('#releasename').value;
+            document.getElementById('displayrelname').innerHTML = rname + " Release";
+        };
+        function addreleasedetailspopup() {
+            document.getElementById('id02').style.display = 'block';
+
+        };
+        function adddefectdetailspopup() {
+            // debugger;
+            //var selectedTd = $('.ticketNumber').text();
+
+
+            var selectedTd = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked").find('td.ticket').text();
+            $("#displayId").text(selectedTd);
+            document.getElementById('id03').style.display = 'block';
+            //document.getElementById('dtitle').innerHTML = +"";
+        };
+    </script>
+    <script>
+        function editTicketDetails() {
+            // var selectedTd = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked").find('td:nth-child(7)');
+            debugger;
+            var selectedTd = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked").find('td.editable');
+            selectedTd.css('background-color', '#A9A9A9');
+            selectedTd.prop('contenteditable', true);
+        }
+
+
+        //function selectedticketbug()
+        //{
+        //    debugger;
+        //    var selectedTd = $('table').find('tbody').find('tr').closest('td').text();
+        //    window.alert(selectedTd);
+        //}
+
+        function saveAllTicketDetails() {
+            debugger;
+            var checkedValues = [];
+            var getvalues = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked");
+            $.each(getvalues, function (i, row) {
+                var obj = {};
+                $(row).find('td').each(function (j, col) {
+                    //console.log(col.innerText.trim().replace(" ", "_"));
+                    console.log(col.innerText);
+                    var colHeader = $("#myTable thead .header").find('th')[j];
+                    obj[colHeader.innerText] = col.innerText;
+                });
+                checkedValues.push(obj);
+
+            });
+            console.log(checkedValues);
+            //var arr = [];
+            //var defectscount = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked").find('td.defects');
+            //value = 200;
+            //var ticket = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked");
+            //var TestExecutionData = [];
+
+            //$.each(ticket, function (i, ele) {
+
+            //    var TicketNumber = $(ele).closest("th");
+            //    console.log(TicketNumber);
+
+            //    $(this).find('td').each(function () {
+            //        debugger;
+            //        var obj = {};
+            //        //var TicketNumber = $(ele).closest("th");
+            //        //console.log(TicketNumber);
+            //        //obj[TicketNumber] = ele.innerText;
+            //        //console.log($(this));
+            //        //TestExecutionData = { Ticket: $(this)[0], Testcases: $(this)[1] }
+            //        //console.log($(this).children());
+            //        //console.log($(this).children());
+            //            //.Testcases: arr[0], Passed: arr[1], Fail: arr[2], OnHold: ele.innerText(3), Defects: ele.innerText(4) };
+            //    });
+
+            //});
+            //$.each(ticket, function (i, ele) {
+
+            //    $.each(getvalues, function (ticket, ele) {
+
+            //        // var ticketId = value;
+            //        //var ticketId = 200;
+            //        console.log(ele.innerText);
+
+            //        arr.push(ele.innerText);
+
+
+            //    });
+            //    console.log(arr);
+            //    var TestExecutionData = { Testcases: arr[0], Passed: arr[1], Fail: arr[2], OnHold: ele.innerText(3), Defects: ele.innerText(4) };
+            //});
+            //selectedTd.css('background-color', '#ffffff');
+            //selectedTd.prop('contenteditable', false);
+
+            //var releaseDesc = document.getElementById('relname').value;
+            //if (releaseDesc == "") {
+            //    alert("Please select atleast one ticket to update");
+            //}
+            //else {
+            //var ticketId = 200;
+            //var getvalues = $('table').find('tbody').find('tr').has("input[type='checkbox']:checked").find('td.editable');
+            //getvalues.
+            //var ticektId={}
+
+            $.ajax({
+
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("saveAlTicketDetails","Home")',
+                dataType: 'json',
+                data: JSON.stringify(checkedValues),
+
+                success: function (response) {
+
+                    //$('#resultDiv').html(response)
+
+
+                    alert('Details added succesfully');
+                },
+                error: function (ex) {
+
+                    debugger;
+                    alert('HiEx');
+                    console.log(ex);
+                }
+            });
+            //}
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <header id="header">
+        <ul>
+            <li style="position: absolute;left: 0;height: 100px;color:white;top:0;font-size:30px"> Defect Tracker</li>
+        </ul>
+        <nav id="nav">
+            <ul>
+                <li>
+                    <a onclick="ReportDefect()" style="cursor: pointer">Report Defect</a>
+                </li>
+                <li>
+
+                    @*<img src="~/Content/images/a.jpg">*@
+
+                </li>
+
+            </ul>
+        </nav>
+
+    </header>
+
+    <div style="padding-top: 50px">
+        <label>
+            Select Release
+            <select class="" id="releasename" name="releasename" onchange="onchangerelasename(this)">
+                <option disabled selected>-- Release Name --</option>
+                @foreach (var rel in ViewBag.allreleasenames)
+                {
+
+                    <option>@rel.Release_Name</option>
+
+                }
+
+
+            </select>
+
+        </label>
+        <button class="w3-button w3-black w3-round-small" id="addrel" name="releasename" onclick="addreleasedetailspopup()">Add Release</button>
+        <div style="padding-top: 10px; padding-bottom: 10px">
+            <span class="span1" id="exit"></span>
+        </div>
+        <div style="padding-bottom: 0px">
+            <button class="w3-button w3-black w3-round-small" id="at1" onclick="addticketdetailspopup()">Add Ticket</button>
+            <button class="w3-button w3-black w3-round-small" id="ad1" onclick="">ALL Defects</button>
+            <button class="w3-button w3-black w3-round-small" id="chartContainer" onclick="chart()">Defect Diagram</button>
+        </div>
+
+        <div>
+
+            <input type="text" id="myInput" onkeyup="searchTid()" placeholder="Search for Ticket number.." title="Type in a Ticket Number">
+            <img id="bugimage" src="~/Content/images/Bug.jpg" width="50" height="40" onclick="adddefectdetailspopup()" style="cursor:pointer" />
+            <button class="w3-button w3-black w3-round-small" id="Editdetails" onclick="editTicketDetails()">Edit</button>
+            <button class="w3-button w3-black w3-round-small" id="savedetails" onclick="saveAllTicketDetails()">Save</button>
+        </div>
+        <div name="wholedata">
+            @*<div id="abc">
+                    <!-- Popup Div Starts Here -->
+                    <div id="popupContact">
+                        <!-- Contact Us Form -->
+                        <form action="#" id="form" method="post" name="form">
+                            <img id="close" src="~/Content/images/closepop.png" onclick="div_hide()" width="20" height="20" />
+                            <h2>Add Defect</h2>
+                            <hr>
+
+                            <input id="dtitle" name="dtitle" placeholder="Defect Title" type="text">
+                            <input id="ddesc" name="ddesc" placeholder="Defect Description" type="text">
+                            <textarea id="drepro" name="drepro" placeholder="Steps to Repro"></textarea>
+                            <a href="javascript:%20check_empty()" id="save" class="defectsave">Save</a>
+
+
+                        </form>
+                    </div>
+                    <!-- Popup Div Ends Here -->
+                </div>*@
+            <!-- Popup Div Ends Here -->
+
+            <div id="id03" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-blue">
+                        <span onclick="document.getElementById('id03').style.display='none'"
+                              class="w3-button w3-blue w3-xlarge w3-display-topright">&times;</span>
+
+                        <h2 id="defect_ticket" name="defectname">Add Defect for<span id="displayId"></span> </h2>
+                    </header>
+
+                    <div class="w3-bar w3-border-bottom">
+                        <button class="tablink w3-bar-item w3-button" onclick="">Add Defect </button>
+                    </div>
+
+                    <div id="defectpopup" class="w3-container city">
+                        @*<div>
+                                Defect for <span id="displayId"></span>
+                            </div>*@
+                        <input id="dtitle" name="dtitle" placeholder="Defect Title" type="text">
+                        <input id="ddesc" name="ddesc" placeholder="Defect Description" type="text">
+                        <textarea id="drepro" name="drepro" placeholder="Steps to Repro"></textarea>
+
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                                onclick="document.getElementById('id03').style.display='none'">
+                            Close
+                        </button>
+                        <button class="w3-button w3-right w3-white w3-border" onclick="DefectDetails()">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Display Popup Button -->
+        @*<div id="abc1">
+                <!-- Popup Div Starts Here -->
+                <div id="popupContact1">
+                    <!-- Contact Us Form -->
+                    <form action="#" id="form" method="post" name="form">
+                        <img id="close" src="~/Content/images/closepop.png" onclick="div_hide1()" width="20" height="20" />
+                         <h2  id="displayrelname" name="TicketTitle"> </h2>
+                        <hr>
+                        <input id="ttitle" name="ttitle" placeholder="Ticket Number" type="text">
+                        <input id="tstate" name="tstate" placeholder="State" type="text">
+                        <textarea id="tdes" name="tdes" placeholder="Ticket Title"></textarea>
+                        <a href="javascript:%20check_empty1()" id="save">Save</a>
+
+                    </form>
+                </div>
+                <!-- Popup Div Ends Here -->
+            </div>*@
+
+        <!-- Popup Div Ends Here -->
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                <header class="w3-container w3-blue">
+                    <span onclick="document.getElementById('id01').style.display='none'"
+                          class="w3-button w3-blue w3-xlarge w3-display-topright">&times;</span>
+
+                    <h2 id="displayrelname" name="TicketTitle"></h2>
+                </header>
+
+                <div class="w3-bar w3-border-bottom">
+                    <button class="tablink w3-bar-item w3-button" onclick="">Add Ticket </button>
+                </div>
+
+                <div id="ticketpopup" class="w3-container city">
+
+                    <input id="ttitle" name="ttitle" placeholder="Ticket Number" type="text">
+                    <input id="tstate" name="tstate" placeholder="State" type="text">
+                    <textarea id="tdes" name="tdes" placeholder="Ticket Title"></textarea>
+
+                </div>
+
+                <div class="w3-container w3-light-grey w3-padding">
+                    <button class="w3-button w3-right w3-white w3-border" onclick="document.getElementById('id01').style.display='none'">
+                        Close
+                    </button>
+                    <button class="w3-button w3-right w3-white w3-border" onclick="SaveTicketDetails()">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @*<div id="abc2">
+            <!-- Popup Div Starts Here -->
+            <div id="popupContact2">
+                <!-- Contact Us Form -->
+                <form action="#" id="form" method="post" name="form">
+                    <img id="close" src="~/Content/images/closepop.png" onclick="div_hide2()" width="20" height="20"/>
+                    <h2>Add Release</h2>
+                    <hr>
+                    <input id="relname" name="releasename" placeholder="Release Name" type="text">
+                    <a href="javascript:%20check_empty2()" id="save">Save</a>
+
+                </form>
+            </div>
+        </div>*@
+
+
+    <div id="id02" class="w3-modal">
+
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+            <header class="w3-container w3-blue">
+                <span onclick="document.getElementById('id02').style.display='none'"
+                      class="w3-button w3-blue w3-xlarge w3-display-topright">&times;</span>
+
+                <h2 id="releaname" name="add release"> Add Release </h2>
+            </header>
+
+            <div class="w3-bar w3-border-bottom">
+                <button class="tablink w3-bar-item w3-button" onclick=""> </button>
+            </div>
+
+            <div id="defectpopup" class="w3-container city">
+                <input id="relname" name="releasename" placeholder="Release Name" type="text">
+
+            </div>
+
+            <div class="w3-container w3-light-grey w3-padding">
+                <button class="w3-button w3-right w3-white w3-border" onclick="closeReleaseDataWindow()"> Close </button>
+                <button class="w3-button w3-right w3-white w3-border" onclick="saveReleaseData()">Save</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div id="resultDiv">
+            @Html.Partial("PartialIndex2")
+        </div>
+    </div>
+
+
+    <div id="footer">
+
+        Do not Send your feedback. Nocopyright © 20xx. Still No Rights Reserved.
+
+    </div>
+</body>
+
+</html>
