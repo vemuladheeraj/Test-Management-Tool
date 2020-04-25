@@ -5,3 +5,6 @@
 /.vs/Defect Tracker/v16/Server/sqlite3/db.lock
 /.vs/Test-Management-Tool/v16/.suo
 /Defect Tracker/obj/Release/Defect Tracker.csprojAssemblyReference.cache
+/.vs
+/obj/Debug
+/Defect Tracker/bin
